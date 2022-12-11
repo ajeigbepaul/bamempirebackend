@@ -3,20 +3,55 @@ const {
   verifyAuthorizationuser,
   verifyAuthorizationadmin,
 } = require("./verifyToken");
+const cloudinary = require("../utils/cloudinary");
 const router = require("express").Router();
+
+
+
+
 
 // CREATE PRODUCT
 router.post("/add", verifyAuthorizationadmin, async (req, res) => {
-  const newProduct = new Product(req.body);
+  const {
+    title,
+    description,
+    image,
+    categories,
+    colors,
+    size,
+    price,
+    discount,
+    instock
+  } = req.body;
   try {
-    const savedProduct = await newProduct.save();
-    res.status(201).json(savedProduct);
+    if (image) {
+      const uploadedResponse = await cloudinary.uploader.upload(image, {
+        upload_preset: "paulimg_bamempire",
+      });
+
+      if (uploadedResponse) {
+        const product = new Product({
+          title,
+          description,
+          image: uploadedResponse,
+          categories,
+          colors,
+          size,
+          price,
+          discount,
+          instock
+        });
+        const savedProduct = await product.save();
+        res.status(200).send(savedProduct);
+      }
+    }
   } catch (error) {
     res.status(500).json(error);
   }
 });
-// UPDATE PRODUCT
 
+
+// UPDATE PRODUCT
 router.put("/:id", verifyAuthorizationadmin, async (req, res) => {
   try {
     const updatedproduct = await Product.findByIdAndUpdate(
@@ -43,25 +78,25 @@ router.delete("/:id", verifyAuthorizationadmin, async (req, res) => {
 });
 
 // GET A PRODUCT
-router.get("find/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-    const { password, ...others } = product._doc;
-    res.status(200).json(others);
+    // const { password, ...others } = product._doc;
+    res.status(200).json(product);
   } catch (error) {
     res.status(500).json(error);
   }
 });
 
 // GET ALL PRODUCTS
-router.get("/allproducts", async (req, res) => {
+router.get("/", async (req, res) => {
   const qNew = req.query.new;
   const qCategory = req.query.category;
 
   let products;
   try {
     if (qNew) {
-      products = await Product.find().sort({ createdAt: -1 }).limit(1);
+      products = await Product.find().sort({ createdAt: -1 }).limit(5);
     } else if (qCategory) {
       products = await Product.find({ categories: { $in: [qCategory], }, },);
     } else {

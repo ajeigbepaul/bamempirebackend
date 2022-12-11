@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 // const request = require('request');
 const dotenv = require("dotenv").config();
 const cors = require("cors")
+const morgan = require("morgan");
+const path = require("path");
+const multer = require("multer");
 const userRoute = require("./routes/user")
 const authRoute = require("./routes/auth")
 const productRoute = require("./routes/product")
@@ -26,7 +29,13 @@ mongoose
     console.log(err);
   });
 // MIDDLEWARE
-app.use(express.json())
+app.use(morgan("tiny"));
+app.use("/images", express.static(path.join(__dirname, "public")));
+app.use(express.json({
+  limit: '50mb',
+  parameterLimit: 100000,
+  extended: true 
+}))
 app.use(cors())
 
 // ROUTES
@@ -38,6 +47,10 @@ app.use("/orders", orderRoute)
 app.use("/payments", payRoute)
 
 
+
+
+
 app.listen(process.env.PORT || 8000, () => {
   console.log("server running");
 });
+
