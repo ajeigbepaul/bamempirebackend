@@ -18,7 +18,7 @@ router.post("/pay", verifyToken, async (req, res) => {
       const savedpaydetails = await paydetails.save();
       res.status(StatusCodes.CREATED).json({
         status: "success",
-        message: "fund added successfully ",
+        message: "payment successful ",
         savedpaydetails
       });
     } catch (error) {

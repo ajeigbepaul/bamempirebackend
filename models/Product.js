@@ -8,7 +8,7 @@ const ProductSchema = new mongoose.Schema({
     colors:{type:String,required:true},
     size:{type:String,required:true},
     price:{type:Number,required:true},
-    discount:{type:Number,default:0},
+    // discount:{type:Number,default:0},
     instock:{type:Boolean, default:true}
 },{timestamps:true})
 

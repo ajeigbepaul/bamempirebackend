@@ -20,7 +20,7 @@ router.post("/add", verifyAuthorizationadmin, async (req, res) => {
     colors,
     size,
     price,
-    discount,
+    // discount,
     instock
   } = req.body;
   try {
@@ -38,7 +38,7 @@ router.post("/add", verifyAuthorizationadmin, async (req, res) => {
           colors,
           size,
           price,
-          discount,
+          // discount,
           instock
         });
         const savedProduct = await product.save();

@@ -33,7 +33,7 @@ router.put("/:id", verifyAuthorizationadmin, async (req, res) => {
   }
 });
 
-// DELETE CART
+// DELETE ORDERS
 router.delete("/:id", verifyAuthorizationadmin, async (req, res) => {
   try {
     await Order.findByIdAndDelete(req.params.id);
