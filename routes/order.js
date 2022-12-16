@@ -56,7 +56,7 @@ router.get("find/:userId", verifyAuthorizationuser, async (req, res) => {
 // GET ALL ORDERS
 router.get("/", verifyAuthorizationadmin, async (req, res) => {
   try {
-    const allorders = await Order.find();
+    const allorders = await Order.find().sort({ _id: -1 });
 
     res.status(200).json(allorders);
   } catch (error) {
