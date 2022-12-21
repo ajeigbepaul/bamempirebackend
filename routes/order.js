@@ -44,9 +44,9 @@ router.delete("/:id", verifyAuthorizationadmin, async (req, res) => {
 });
 
 // GET USER ORDERS
-router.get("find/:userId", verifyAuthorizationuser, async (req, res) => {
+router.get("/:userId", verifyAuthorizationuser, async (req, res) => {
   try {
-    const userorders = await Cart.find({ userId: req.params.userId });
+    const userorders = await Order.find({ userId: req.params.userId });
     res.status(200).json(userorders);
   } catch (error) {
     res.status(500).json(error);
@@ -85,5 +85,33 @@ router.get("/income", verifyAuthorizationadmin, async(req, res) => {
     res.status(500).json(error);
   }
 });
+
+// UPDATE STATUS
+router.put("status/:id", verifyAuthorizationadmin, async (req, res) => {
+  try {
+    const updatedorder = await Order.findByIdAndUpdate(
+      req.params.id,
+      { set: { status: req.body.status } },
+      { new: true }
+    );
+    res.status(200).json(updatedorder);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// exports.updateStatus = (req, res) => {  
+//   Order.findOneAndUpdate(
+//      { _id: req.body.orderId },
+//      { set: { status: req.body.status } },
+//      { new: true },
+//      (err, order) => {
+//      if (err) {
+//          return res.status(400).json({error: "Cannot update order status"});
+//      }
+//      res.json(order);
+//   });
+// };
+
 
 module.exports = router;

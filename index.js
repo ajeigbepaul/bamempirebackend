@@ -12,6 +12,8 @@ const productRoute = require("./routes/product")
 const orderRoute = require("./routes/order")
 const cartRoute = require("./routes/cart")
 const payRoute = require("./routes/paystack")
+const statusRoute = require("./routes/status")
+
 
 
 
@@ -45,6 +47,7 @@ app.use("/products", productRoute)
 app.use("/carts", cartRoute)
 app.use("/orders", orderRoute)
 app.use("/payments", payRoute)
+app.use("/status", statusRoute)
 
 
 

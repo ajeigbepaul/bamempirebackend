@@ -6,7 +6,7 @@ const OrderSchema = new mongoose.Schema({
         products: {type:Array,required:true},
         total: { type: Number, required: true },
         address: { type: Object, required: true },
-        status: { type: String, default: true },
+        status: { type: String, default: "pending" },
       
     
 },{timestamps:true})
