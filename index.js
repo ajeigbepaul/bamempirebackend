@@ -47,7 +47,8 @@ app.use(
   })
 );
 app.use(cors());
-
+// TEST ROUTE
+app.get("/",(req,res)=>{res.send("working fine")})
 // ROUTES
 app.use("/users", userRoute);
 app.use("/auth", authRoute);
