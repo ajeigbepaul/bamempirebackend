@@ -21,14 +21,15 @@ router.post("/add", verifyAuthorizationadmin, async (req, res) => {
     size,
     price,
     // discount,
-    instock
+    instock,
+    // instockqty
   } = req.body;
+ 
   try {
     if (image) {
       const uploadedResponse = await cloudinary.uploader.upload(image, {
         upload_preset: "paulimg_bamempire",
       });
-
       if (uploadedResponse) {
         const product = new Product({
           title,
@@ -38,12 +39,13 @@ router.post("/add", verifyAuthorizationadmin, async (req, res) => {
           colors,
           size,
           price,
-          // discount,
-          instock
+          instock,
+          // instockqty
         });
         const savedProduct = await product.save();
         res.status(200).send(savedProduct);
       }
+      
     }
   } catch (error) {
     res.status(500).json(error);
