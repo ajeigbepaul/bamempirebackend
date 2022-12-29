@@ -13,7 +13,7 @@ const router = require("express").Router();
 // CREATE PRODUCT
 router.post("/add", verifyAuthorizationadmin, async (req, res) => {
   const {
-    title,
+    // title,
     description,
     image,
     categories,
@@ -32,7 +32,7 @@ router.post("/add", verifyAuthorizationadmin, async (req, res) => {
       });
       if (uploadedResponse) {
         const product = new Product({
-          title,
+          // title,
           description,
           image: uploadedResponse,
           categories,

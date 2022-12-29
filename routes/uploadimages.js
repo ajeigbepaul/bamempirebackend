@@ -49,4 +49,15 @@ router.delete("/:id", verifyAuthorizationadmin, async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+// GET ALL IMAGES
+router.get("/", async (req, res) => {
+  try {
+    const allimages = await Images.find();
+
+    res.status(200).json(allimages);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
   module.exports = router;
