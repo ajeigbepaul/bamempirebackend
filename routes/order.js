@@ -44,7 +44,7 @@ router.delete("/:id", verifyAuthorizationadmin, async (req, res) => {
 });
 
 // GET USER ORDERS
-router.get("/:userId", verifyAuthorizationuser, async (req, res) => {
+router.get("/:userId", verifyToken, async (req, res) => {
   try {
     const userorders = await Order.find({ userId: req.params.userId });
     res.status(200).json(userorders);
