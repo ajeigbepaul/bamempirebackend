@@ -22,11 +22,12 @@ router.post("/pay", verifyToken, async (req, res) => {
         savedpaydetails
       });
     } catch (error) {
-        res.status(StatusCodes.SERVER_ERROR).json({
-            status: "failed",
-            message: "server error",
-            error: error,
-          });
+      console.log(error)
+        // res.status(StatusCodes.SERVER_ERROR).json({
+        //     status: "failed",
+        //     message: "server error",
+        //     error: error,
+        //   });
     }
   });
 
