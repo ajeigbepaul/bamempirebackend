@@ -32,7 +32,6 @@ router.post("/add", verifyAuthorizationadmin, async (req, res) => {
       });
       if (uploadedResponse) {
         const product = new Product({
-          // title,
           description,
           image: uploadedResponse,
           categories,
@@ -40,7 +39,6 @@ router.post("/add", verifyAuthorizationadmin, async (req, res) => {
           size,
           price,
           instock,
-          // instockqty
         });
         const savedProduct = await product.save();
         res.status(200).send(savedProduct);
