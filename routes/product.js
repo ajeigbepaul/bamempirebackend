@@ -13,16 +13,14 @@ const router = require("express").Router();
 // CREATE PRODUCT
 router.post("/add", verifyAuthorizationadmin, async (req, res) => {
   const {
-    // title,
     description,
     image,
     categories,
     colors,
     size,
     price,
-    // discount,
+    moq,
     instock,
-    // instockqty
   } = req.body;
  
   try {
@@ -38,6 +36,7 @@ router.post("/add", verifyAuthorizationadmin, async (req, res) => {
           colors,
           size,
           price,
+          moq,
           instock,
         });
         const savedProduct = await product.save();

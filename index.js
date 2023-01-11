@@ -17,7 +17,7 @@ const uploadimagesRoute = require("./routes/uploadimages")
 
 // APP CONNECTION
 const app = express();
-
+// mongoose.connect(process.env.MONGO_URI,{ useNewUrlParser: true, useUnifiedTopology: true });
 // DB CONNECTION
 const connectDB = async () => {
   try {
@@ -29,14 +29,14 @@ const connectDB = async () => {
   }
 };
 // DB CONNECTION
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => {
-    console.log("DB connection successful");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+// mongoose
+//   .connect(process.env.MONGO_URL,{ useNewUrlParser: true, useUnifiedTopology: true })
+//   .then(() => {
+//     console.log("DB connection successful");
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
 // MIDDLEWARE
 app.use(morgan("tiny"));
 app.use("/images", express.static(path.join(__dirname, "public")));
@@ -50,7 +50,9 @@ app.use(
 app.use(cors());
 // TEST ROUTE
 app.get("/",(req,res)=>{res.send("working fine")})
-
+app.post("/email", (req,res)=>{
+  res.json({message:"mail sent"})
+})
 
 // ROUTES
 app.use("/users", userRoute);
@@ -69,5 +71,8 @@ connectDB().then(() => {
     console.log("server running, listening for requests");
   });
 });
+    //  app.listen(process.env.PORT || 8000, () => {
+    //   console.log("server running, listening for requests");
+    // });
 
 

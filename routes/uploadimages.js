@@ -60,4 +60,15 @@ router.get("/", async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+// GET IMAGES BY ID
+router.get("/:id", async (req, res) => {
+  try {
+    const images = await Images.findById(req.params.id);
+    // const { password, ...others } = product._doc;
+    res.status(200).json(images);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
   module.exports = router;
