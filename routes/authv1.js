@@ -1,11 +1,15 @@
 const router = require("express").Router();
+// const sendMail = require("../utils/nowSendMail");
 const { User } = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
+// AUTH
+
 router.post("/", async (req, res) => {
   try {
+    const cookies = req.cookies;
     const user = await User.findOne({ email: req.body.email });
     if (!user)
       return res.status(401).send({ message: "Invalide email or password" });
@@ -15,9 +19,8 @@ router.post("/", async (req, res) => {
     );
     if (!validPassword)
       return res.status(401).send({ message: "Invalid Email or Password" });
-      const roles = Object.values(user.roles).filter(Boolean);
+    const roles = Object.values(user.roles).filter(Boolean);
     // Generate Token
-    // const token = user.generateAuthToken();
     const accessToken = jwt.sign(
       {
         id: user._id,
@@ -27,21 +30,40 @@ router.post("/", async (req, res) => {
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "30s" }
     );
-    const refreshToken = jwt.sign(
+    const newrefreshToken = jwt.sign(
       {
         email: user.email,
       },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "15s" }
+      { expiresIn: "1hr" }
     );
+
+    let newRefreshTokenArray = !cookies?.jwt
+      ? user.refreshToken
+      : user.refreshToken.filter((rt) => rt !== cookies.jwt);
+    if (cookies?.jwt) {
+      const refreshToken = cookies.jwt;
+      const foundToken = await User.findOne({ refreshToken }).exec();
+      // detects refresh token reuse
+      if (!foundToken) {
+        console.log("attempted refresh token reuse at login");
+        newRefreshTokenArray = [];
+      }
+      res.clearCookie("jwt", {
+        httpOnly: true,
+        sameSite: "None",
+        secure: true,
+      });
+    }
+
+    // saving refreshToken with current user
+    user.refreshToken = [...newRefreshTokenArray, newrefreshToken];
+    const result = await user.save();
+    console.log(result);
+    console.log(roles);
     const { password, ...others } = user._doc;
-    // save refreshToken with current user
-    user.refreshToken = refreshToken;
-    const result = await user.save()
-    console.log(result)
-    console.log(roles)
     //  Create secure cookie with refresh token
-    res.cookie("jwt", refreshToken, {
+    res.cookie("jwt", newrefreshToken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
     });
@@ -55,4 +77,5 @@ router.post("/", async (req, res) => {
     res.status(500).send({ message: "Internal server error" });
   }
 });
+
 module.exports = router;

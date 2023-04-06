@@ -5,11 +5,16 @@ const {
 } = require("./verifyToken");
 const cloudinary = require("../utils/cloudinary");
 const router = require("express").Router();
+const roles_list = require("../utils/roles_list")
+const verifyRoles = require("../middleware/verifyRoles")
 
 
 
 
-
+// test
+router.get("/test", verifyRoles(roles_list.user), (req,res) =>{
+  res.send('testing rolebase verification')
+})
 // CREATE PRODUCT
 router.post("/add", verifyAuthorizationadmin, async (req, res) => {
   const {

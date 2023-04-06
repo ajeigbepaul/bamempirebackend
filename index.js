@@ -4,6 +4,7 @@ const dotenv = require("dotenv").config();
 const cors = require("cors");
 const morgan = require("morgan");
 const path = require("path");
+const cookieParser = require("cookie-parser");
 const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
 const productRoute = require("./routes/product");
@@ -11,7 +12,14 @@ const orderRoute = require("./routes/order");
 const cartRoute = require("./routes/cart");
 const payRoute = require("./routes/paystack");
 const statusRoute = require("./routes/status");
+const refreshRoutes = require("./routes/refreshToken");
 const uploadimagesRoute = require("./routes/uploadimages")
+const logOutRoute = require('./routes/logout')
+// const verifyJWT = require("./middleswares/verifyJWT");
+const verifyJwt = require("./middleware/verifyJwt");
+const verifyRoles = require("./middleware/verifyRoles");
+const roles_list = require("./utils/roles_list")
+
 
 
 
@@ -28,15 +36,7 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
-// DB CONNECTION
-// mongoose
-//   .connect(process.env.MONGO_URL,{ useNewUrlParser: true, useUnifiedTopology: true })
-//   .then(() => {
-//     console.log("DB connection successful");
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
+
 // MIDDLEWARE
 app.use(morgan("tiny"));
 app.use("/images", express.static(path.join(__dirname, "public")));
@@ -48,8 +48,15 @@ app.use(
   })
 );
 app.use(cors());
+app.use(cookieParser());
 // TEST ROUTE
 app.get("/",(req,res)=>{res.send("working fine")})
+// app.use(verifyJwt)
+// verifyRoles(roles_list.user,roles_list.admin)
+app.get("/testing", verifyJwt, (req, res) => {
+  res.send("testing working fine");
+});
+
 app.post("/email", (req,res)=>{
   res.json({message:"mail sent"})
 })
@@ -57,6 +64,10 @@ app.post("/email", (req,res)=>{
 // ROUTES
 app.use("/users", userRoute);
 app.use("/auth", authRoute);
+app.use("/refresh", refreshRoutes);
+app.use('/logout',logOutRoute);
+
+app.use(verifyJwt);
 app.use("/products", productRoute);
 app.use("/carts", cartRoute);
 app.use("/orders", orderRoute);
@@ -71,8 +82,6 @@ connectDB().then(() => {
     console.log("server running, listening for requests");
   });
 });
-    //  app.listen(process.env.PORT || 8000, () => {
-    //   console.log("server running, listening for requests");
-    // });
+   
 
 
