@@ -47,7 +47,7 @@ app.use(
     extended: true,
   })
 );
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:3001" }));
 app.use(cookieParser());
 // TEST ROUTE
 app.get("/",(req,res)=>{res.send("working fine")})
@@ -67,7 +67,7 @@ app.use("/auth", authRoute);
 app.use("/refresh", refreshRoutes);
 app.use('/logout',logOutRoute);
 
-app.use(verifyJwt);
+// app.use(verifyJwt);
 app.use("/products", productRoute);
 app.use("/carts", cartRoute);
 app.use("/orders", orderRoute);

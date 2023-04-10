@@ -25,14 +25,14 @@ router.post("/", async (req, res) => {
         roles: roles,
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "30s" }
+      { expiresIn: "30m" }
     );
     const refreshToken = jwt.sign(
       {
         email: user.email,
       },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "15s" }
+      { expiresIn: "45m" }
     );
     const { password, ...others } = user._doc;
     // save refreshToken with current user
@@ -43,6 +43,7 @@ router.post("/", async (req, res) => {
     //  Create secure cookie with refresh token
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
+      sameSite:'None',
       maxAge: 24 * 60 * 60 * 1000,
     });
     res.status(200).send({
