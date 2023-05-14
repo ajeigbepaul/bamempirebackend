@@ -25,14 +25,14 @@ router.post("/", async (req, res) => {
         roles: roles,
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "30m" }
+      { expiresIn: "15m" }
     );
     const refreshToken = jwt.sign(
       {
         email: user.email,
       },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "45m" }
+      { expiresIn: "30m" }
     );
     const { password, ...others } = user._doc;
     // save refreshToken with current user

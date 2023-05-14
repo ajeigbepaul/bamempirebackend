@@ -1,8 +1,4 @@
 const Product = require("../models/Product");
-const {
-  verifyAuthorizationuser,
-  verifyAuthorizationadmin,
-} = require("./verifyToken");
 const cloudinary = require("../utils/cloudinary");
 const router = require("express").Router();
 const roles_list = require("../utils/roles_list")
@@ -23,6 +19,7 @@ router.post(
   verifyRoles(roles_list.admin),
   async (req, res) => {
     const {
+      // title,
       description,
       image,
       categories,

@@ -116,11 +116,12 @@ router.post("/", async (req, res) => {
 });
 // Update User
 router.put("/update", async (req, res) => {
-  const { id, firstname, lastname, roles, active, email, password } = req.body;
+  const { id, firstname, lastname, username, roles, active, email, password } = req.body;
   if (
     !id ||
     !firstname ||
     !lastname ||
+    !username ||
     !email ||
     !roles ||
     //   !Array.isArray(roles) ||
@@ -140,6 +141,7 @@ router.put("/update", async (req, res) => {
 
   user.firstname = firstname;
   user.lastname = lastname;
+  user.username = username;
   user.email = email;
   user.roles = roles;
   user.active = active;
@@ -151,4 +153,28 @@ router.put("/update", async (req, res) => {
   res.send({ message: `${updatedUser.email} updated` });
 });
 
+// UPDATE PASSWORD...
+router.put("/update-password", async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  try {
+    // Find the user by email (replace this with your own database query)
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Generate a new hashed password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the user's password in the database (replace this with your own database update)
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.json({ message: "Password updated successfully" });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
 module.exports = router;

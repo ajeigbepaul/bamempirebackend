@@ -47,7 +47,7 @@ app.use(
     extended: true,
   })
 );
-app.use(cors({ credentials: true, origin: "http://localhost:3001" }));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(cookieParser());
 // TEST ROUTE
 app.get("/",(req,res)=>{res.send("working fine")})

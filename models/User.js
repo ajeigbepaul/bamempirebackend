@@ -6,12 +6,12 @@ const UserSchema = new mongoose.Schema(
   {
     firstname: { type: String, require: true },
     lastname: { type: String, require: true },
+    username: { type: String, required: true },
     email: { type: String, require: true },
     password: { type: String, require: true },
     // roles: { type: String, default:'1001'},
-    roles:{user:{type:Number,default:1001}, admin:Number},
-    refreshToken:{type:String}
-
+    roles: { user: { type: Number, default: 1001 }, admin: Number },
+    refreshToken: { type: String },
   },
   { timestamps: true }
 );
