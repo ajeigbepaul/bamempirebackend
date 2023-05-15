@@ -10,7 +10,7 @@ const authRoute = require("./routes/auth");
 const productRoute = require("./routes/product");
 const orderRoute = require("./routes/order");
 const cartRoute = require("./routes/cart");
-const payRoute = require("./routes/paystack");
+const payRoute = require("./routes/pay");
 const statusRoute = require("./routes/status");
 const refreshRoutes = require("./routes/refreshToken");
 const uploadimagesRoute = require("./routes/uploadimages")
@@ -70,7 +70,7 @@ app.use('/logout',logOutRoute);
 // app.use(verifyJwt);
 app.use("/products", productRoute);
 app.use("/carts", cartRoute);
-app.use("/orders", orderRoute);
+app.use("/ordermes", orderRoute);
 app.use("/payments", payRoute);
 app.use("/status", statusRoute);
 app.use("/images", uploadimagesRoute)

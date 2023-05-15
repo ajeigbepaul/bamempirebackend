@@ -5,9 +5,6 @@ const roles_list = require("../utils/roles_list")
 const verifyRoles = require("../middleware/verifyRoles")
 const verifyJwt = require("../middleware/verifyJwt")
 
-
-
-
 // test
 router.get("/test", verifyJwt, verifyRoles(roles_list.user), (req,res) =>{
   res.send('testing rolebase verification')
@@ -19,14 +16,13 @@ router.post(
   verifyRoles(roles_list.admin),
   async (req, res) => {
     const {
-      // title,
       description,
       image,
       categories,
       colors,
       size,
       price,
-      discount,
+      // discount,
       moq,
       instock,
     } = req.body;
@@ -44,7 +40,7 @@ router.post(
             colors,
             size,
             price,
-            discount,
+            // discount,
             moq,
             instock,
           });
@@ -52,14 +48,8 @@ router.post(
           res.status(200).send(savedProduct);
         }
       }
-      // const product = new Product({description,
-      //        categories,
-      //       colors,
-      //       size,
-      //      price,
-      //      discount,
-      //      moq,
-      //      instock,})
+      // const product = new Product({description
+      //      })
       // const savedProduct = await product.save()
       // res.status(200).send(savedProduct)
     } catch (error) {
