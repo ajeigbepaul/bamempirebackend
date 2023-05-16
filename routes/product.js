@@ -96,15 +96,20 @@ router.delete(
 );
 
 // GET A PRODUCT
-router.get("/:id", async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    // const { password, ...others } = product._doc;
-    res.status(200).json(product);
-  } catch (error) {
-    res.status(500).json(error);
+router.get(
+  "/:id",
+  verifyJwt,
+  verifyRoles(roles_list.user),
+  async (req, res) => {
+    try {
+      const product = await Product.findById(req.params.id);
+      // const { password, ...others } = product._doc;
+      res.status(200).json(product);
+    } catch (error) {
+      res.status(500).json(error);
+    }
   }
-});
+);
 
 // GET ALL PRODUCTS
 router.get("/", async (req, res) => {
@@ -116,7 +121,7 @@ router.get("/", async (req, res) => {
     if (qNew) {
       products = await Product.find().sort({ createdAt: -1 }).limit(5);
     } else if (qCategory) {
-      products = await Product.find({ categories: { $in: [qCategory], }, },);
+      products = await Product.find({ categories: { $in: [qCategory] } });
     } else {
       products = await Product.find();
     }
