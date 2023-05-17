@@ -33,6 +33,12 @@ router.post(
           upload_preset: "paulimg_bamempire",
         });
         if (uploadedResponse) {
+          // Generate a random 7-digit hexadecimal number
+          const randomHex = Math.floor(Math.random() * 16777215)
+            .toString(16)
+            .padStart(6, "0");
+          const pref = 'bam'
+          const newProductId = pref+randomHex
           const product = new Product({
             description,
             image: uploadedResponse,
@@ -43,6 +49,7 @@ router.post(
             // discount,
             moq,
             instock,
+            productId:newProductId
           });
           const savedProduct = await product.save();
           res.status(200).send(savedProduct);
