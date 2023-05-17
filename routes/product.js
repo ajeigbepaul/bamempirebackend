@@ -105,8 +105,8 @@ router.delete(
 // GET A PRODUCT
 router.get(
   "/:id",
-  verifyJwt,
-  verifyRoles(roles_list.user),
+  // verifyJwt,
+  // verifyRoles(roles_list.user),
   async (req, res) => {
     try {
       const product = await Product.findById(req.params.id);

@@ -50,10 +50,10 @@ app.use(
 app.use(
   cors({
     credentials: true,
-    origin: "https://bamwholesalestores.com",
+    origin: "http://localhost:3000",
   })
 );
-// origin: ["http://localhost:3000", "https://bamwholesalestores.com/"],
+// origin: ["http://localhost:3000", "https://bamwholesalestores.com"],
 app.use(cookieParser());
 // TEST ROUTE
 app.get("/",(req,res)=>{res.send("working fine")})
