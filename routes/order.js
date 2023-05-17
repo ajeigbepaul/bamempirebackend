@@ -10,15 +10,8 @@ router.post(
   verifyJwt,
   verifyRoles(roles_list.user),
   async (req, res) => {
-    const prefix = bam;
+    
     const neworder = new Order(req.body);
-    // Generate a random 10-digit hexadecimal number
-    const randomHex = Math.floor(Math.random() * 16777215)
-      .toString(16)
-      .padStart(6, "0");
-    const newOrderNumber = prefix + randomHex;
-    // Assign the generated hex number to the order
-    neworder.orderNumber = newOrderNumber
     try {
       const savedorder = await neworder.save();
       res.status(201).json(savedorder);
