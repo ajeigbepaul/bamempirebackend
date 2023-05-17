@@ -44,8 +44,7 @@ router.post(
   }
 );
 
-
-  // DELETE OTHER PRODUCT IMAGES
+// DELETE OTHER PRODUCT IMAGES
 router.delete(
   "/:id",
   verifyJwt,
@@ -61,7 +60,7 @@ router.delete(
 );
 
 // GET ALL IMAGES
-router.get("/", verifyJwt, verifyRoles(roles_list.user), async (req, res) => {
+router.get("/",  async (req, res) => {
   try {
     const allimages = await Images.find();
 
@@ -86,4 +85,4 @@ router.get(
     }
   }
 );
-  module.exports = router;
+module.exports = router;
