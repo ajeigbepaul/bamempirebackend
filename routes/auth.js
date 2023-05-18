@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
         email: user.email,
       },
       process.env.REFRESH_TOKEN_SECRET,
-      { expiresIn: "45m" }
+      { expiresIn: "45s" }
     );
     const { password, ...others } = user._doc;
     // save refreshToken with current user
