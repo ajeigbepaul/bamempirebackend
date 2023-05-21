@@ -25,7 +25,7 @@ router.post("/", async (req, res) => {
         roles: roles,
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "45m" }
+      { expiresIn: "30m" }
     );
     const refreshToken = jwt.sign(
       {
@@ -38,8 +38,8 @@ router.post("/", async (req, res) => {
     // save refreshToken with current user
     user.refreshToken = refreshToken;
     const result = await user.save()
-    console.log(result)
-    console.log(roles)
+    // console.log(result)
+    // console.log(roles)
     //  Create secure cookie with refresh token
     res.cookie("jwt", refreshToken, {
       httpOnly: true,

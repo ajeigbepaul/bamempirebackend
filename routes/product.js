@@ -117,6 +117,27 @@ router.get(
     }
   }
 );
+// GET THE STATUS FROM A PRODUCT BY ID
+// GET route to retrieve the status of a product by ID
+router.get('/:productId/status',verifyJwt,
+  verifyRoles(roles_list.admin), async (req, res) => {
+  const { productId } = req.params;
+
+  try {
+    // Retrieve the status of the product with the given ID
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    // Extract the status from the product and send it as the response
+    const { instock } = product;
+    res.json({ instock });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
 // GET ALL PRODUCTS
 router.get("/", async (req, res) => {
