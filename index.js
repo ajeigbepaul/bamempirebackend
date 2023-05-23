@@ -9,6 +9,7 @@ const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
 const productRoute = require("./routes/product");
 const orderRoute = require("./routes/order");
+const salesRoute = require("./routes/sales")
 const cartRoute = require("./routes/cart");
 const payRoute = require("./routes/pay");
 const statusRoute = require("./routes/status");
@@ -77,6 +78,7 @@ app.use('/logout',logOutRoute);
 app.use("/products", productRoute);
 app.use("/carts", cartRoute);
 app.use("/ordermes", orderRoute);
+app.use("/sales", salesRoute );
 app.use("/payments", payRoute);
 app.use("/status", statusRoute);
 app.use("/images", uploadimagesRoute)
