@@ -11,6 +11,7 @@ const ProductSchema = new mongoose.Schema(
     size: { type: String, required: true },
     price: { type: Number, required: true },
     // discount:{type:Number},
+    availableqty:{type:Number},
     moq: { type: String, required: true },
     instock: { type: String, required: true },
   },
