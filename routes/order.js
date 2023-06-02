@@ -1,4 +1,5 @@
 const Order = require("../models/Order");
+const crypto = require("crypto");
 const roles_list = require("../utils/roles_list");
 const verifyRoles = require("../middleware/verifyRoles");
 const verifyJwt = require("../middleware/verifyJwt");
@@ -10,8 +11,16 @@ router.post(
   verifyJwt,
   verifyRoles(roles_list.user),
   async (req, res) => {
-    
-    const neworder = new Order(req.body);
+    const generateRandomHex = () => {
+      const bytes = crypto.randomBytes(5);
+      return bytes.toString("hex").toUpperCase();
+    };
+
+    const neworder = new Order({
+      ...req.body,
+      orderNumber: generateRandomHex(),
+    });
+    // const neworder = new Order(req.body);
     try {
       const savedorder = await neworder.save();
       res.status(201).json(savedorder);
@@ -64,7 +73,9 @@ router.get(
   verifyRoles(roles_list.user),
   async (req, res) => {
     try {
-      const userorders = await Order.find({ userId: req.params.userId });
+      const userorders = await Order.find({ userId: req.params.userId }).sort({
+        createdAt: -1,
+      });
       res.status(200).json(userorders);
     } catch (error) {
       res.status(500).json(error);
