@@ -65,7 +65,21 @@ router.delete(
     }
   }
 );
-
+// GET INDIVIDUAL ORDER BY ID
+router.get(
+  "/:id",
+  // verifyJwt,
+  // verifyRoles(roles_list.user),
+  async (req, res) => {
+    try {
+      const order = await Order.findById(req.params.id);
+      // const { password, ...others } = product._doc;
+      res.status(200).json(order);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+);
 // GET USER ORDERS
 router.get(
   "/:userId",
