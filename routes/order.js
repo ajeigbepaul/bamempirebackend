@@ -67,17 +67,29 @@ router.delete(
 );
 // GET INDIVIDUAL ORDER BY ID
 router.get(
-  "/:id",
-  // verifyJwt,
-  // verifyRoles(roles_list.user),
+  "/user/:userId",
+  verifyJwt,
+  verifyRoles(roles_list.user),
   async (req, res) => {
     try {
-      const order = await Order.findById(req.params.id);
-      // const { password, ...others } = product._doc;
-      res.status(200).json(order);
+      const orders = await Order.find({ userId: req.params.userId }).sort({
+        createdAt: -1,
+      });;
+      if (orders.length === 0) {
+        return res
+          .status(404)
+          .json({ message: "No orders found for the user" });
+      }
+      res.status(200).json(orders);
     } catch (error) {
-      res.status(500).json(error);
+      res.status(500).json({ message: "Could not fetch orders", error });
     }
+    // try {
+    //   const order = await Order.findById(req.params.id);
+    //   res.status(200).json(order);
+    // } catch (error) {
+    //   res.status(500).json(error);
+    // }
   }
 );
 // GET USER ORDERS
