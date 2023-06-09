@@ -65,7 +65,7 @@ router.delete(
     }
   }
 );
-// GET INDIVIDUAL ORDER BY ID
+// GET INDIVIDUAL ORDER-ID BY USERID
 router.get(
   "/user/:userId",
   verifyJwt,
@@ -103,6 +103,22 @@ router.get(
         createdAt: -1,
       });
       res.status(200).json(userorders);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+);
+
+// GET INDIVIDUAL ORDERS BY ADMIN
+// GET USER ORDERS
+router.get(
+  "/order/:id",
+  verifyJwt,
+  verifyRoles(roles_list.admin),
+  async (req, res) => {
+    try {
+      const order = await Order.findById(req.params.id);
+      res.status(200).json(order);
     } catch (error) {
       res.status(500).json(error);
     }
