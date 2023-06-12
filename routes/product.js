@@ -21,6 +21,7 @@ router.post(
       categories,
       colors,
       size,
+      selectedSizes,
       price,
       availableqty,
       // discount,
@@ -46,6 +47,7 @@ router.post(
             categories,
             colors,
             size,
+            selectedSizes,
             price,
             availableqty,
             // discount,
@@ -69,26 +71,56 @@ router.post(
 
 
 // UPDATE PRODUCT
+// router.put(
+//   "/:id",
+//   verifyJwt,
+//   verifyRoles(roles_list.admin),
+//   async (req, res) => {
+//     try {
+//       const updatedproduct = await Product.findByIdAndUpdate(
+//         req.params.id,
+//         {
+//           $set: req.body,
+//         },
+//         { new: true }
+//       );
+//       res.status(200).json(updatedproduct);
+//     } catch (error) {
+//       res.status(500).json(error);
+//     }
+//   }
+// );
 router.put(
   "/:id",
   verifyJwt,
   verifyRoles(roles_list.admin),
   async (req, res) => {
     try {
-      const updatedproduct = await Product.findByIdAndUpdate(
-        req.params.id,
+      const id = req.params.id;
+      const updatedProduct = req.body;
+
+      // Logic to update the product status in the database
+      // Example: Assuming you have a products collection in MongoDB
+      await Product.findByIdAndUpdate(
+        id,
         {
-          $set: req.body,
+          instock: updatedProduct.instock,
         },
         { new: true }
       );
-      res.status(200).json(updatedproduct);
+
+      res
+        .status(200)
+        .json({
+          message: "Product status updated successfully",
+          updatedProduct,
+        });
     } catch (error) {
-      res.status(500).json(error);
+      console.log("Error updating product status:", error);
+      res.status(500).json({ message: "Error updating product status" });
     }
   }
 );
-
 // DELETE PRODUCT
 router.delete(
   "/:id",
@@ -140,6 +172,10 @@ router.get('/:productId/status',verifyJwt,
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+
+ 
+
 
 // GET ALL PRODUCTS
 router.get("/", async (req, res) => {
