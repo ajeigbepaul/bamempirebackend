@@ -65,6 +65,29 @@ router.delete(
     }
   }
 );
+// DELETE ORDERS BY ORDERNUMBER
+router.delete(
+  "/order/:orderNumber",
+  verifyJwt,
+  verifyRoles(roles_list.admin),
+  async (req, res) => {
+    try {
+      const order = await Order.findOneAndDelete({
+        orderNumber: req.params.orderNumber,
+      });
+
+      if (!order) {
+        // Handle case when order is not found
+        return res.status(404).json({ error: "Order not found" });
+      }
+
+      res.status(200).json("Order has been deleted...");
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+);
+
 // GET INDIVIDUAL ORDER-ID BY USERID
 router.get(
   "/user/:userId",
