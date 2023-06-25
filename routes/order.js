@@ -150,14 +150,41 @@ router.get(
 
 // GET ALL ORDERS
 router.get("/", verifyJwt, verifyRoles(roles_list.admin), async (req, res) => {
-  try {
-    const allorders = await Order.find().sort({ _id: -1 });
+  // try {
+  //   const allorders = await Order.find().sort({ _id: -1 });
 
-    res.status(200).json(allorders);
+  //   res.status(200).json(allorders);
+  // } catch (error) {
+  //   res.status(500).json(error);
+  
+  // }
+  try {
+    const { orderNumber } = req.query;
+    let query = {};
+
+    if (orderNumber) {
+      query.orderNumber = orderNumber;
+    }
+
+    const allOrders = await Order.find(query).sort({ _id: -1 });
+
+    res.status(200).json(allOrders);
   } catch (error) {
     res.status(500).json(error);
   }
 });
+
+// GET ALL ORDERS WITH A SEARCH PARAMS
+// router.get("/search", verifyJwt, verifyRoles(roles_list.admin), async (req, res) => {
+//      try {
+//        const allorders = await Order.find().sort({ _id: -1 });
+
+//        res.status(200).json(allorders);
+//      } catch (error) {
+//        res.status(500).json(error);
+//      }
+// });
+
 
 // GET MONTHLY INCOME
 router.get(
