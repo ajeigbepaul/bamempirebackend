@@ -28,6 +28,8 @@ const roles_list = require("./utils/roles_list")
 const app = express();
 // mongoose.connect(process.env.MONGO_URI,{ useNewUrlParser: true, useUnifiedTopology: true });
 // DB CONNECTION
+
+
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URL);
@@ -48,10 +50,17 @@ app.use(
     extended: true,
   })
 );
+// CORS Configuration for all origins with credentials
 app.use(
   cors({
-    credentials: true,
-    origin: "https://bamwholesalestores.com",
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g., mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      return callback(null, true); // Allow all origins
+    },
+    credentials: true, // Enable credentials (cookies, authorization headers)
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow all standard methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow common headers
   })
 );
 // origin: ["http://localhost:3000", "https://bamwholesalestores.com"],
